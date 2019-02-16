@@ -14,25 +14,27 @@ public class LandAuto extends LinearOpMode{
 
     @Override
     public void runOpMode() throws InterruptedException{
+
         mecanumDrive = new MecanumDrive(hardwareMap);
         riserControl = new RiserControl(hardwareMap);
         waitForStart();
 
         riserControl.riseRiser();
-        Thread.sleep(10000);
+        Thread.sleep(6500);
         riserControl.stopRiser();
 
-        mecanumDrive.moveParaRight();
-        Thread.sleep(500);
+        mecanumDrive.moveParaRight(600);
+        while (mecanumDrive.isMotorBusy());
         mecanumDrive.stopMove();
 
-        mecanumDrive.moveFwd();
-        Thread.sleep(500);
+        mecanumDrive.moveFwd(1200);
+        while (mecanumDrive.isMotorBusy());
         mecanumDrive.stopMove();
 
-        mecanumDrive.moveParaRight();
-        Thread.sleep(2000);
+        mecanumDrive.moveParaRight(850);
+        while (mecanumDrive.isMotorBusy());
         mecanumDrive.stopMove();
+
 
     }
 }

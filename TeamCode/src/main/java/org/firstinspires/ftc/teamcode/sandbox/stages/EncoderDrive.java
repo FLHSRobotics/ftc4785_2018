@@ -3,39 +3,33 @@ package org.firstinspires.ftc.teamcode.sandbox.stages;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.commands.MarkerServo;
 import org.firstinspires.ftc.teamcode.commands.MecanumDrive;
-import org.firstinspires.ftc.teamcode.commands.VuforiaNavigation;
 
-
-@Autonomous(name="Claim Auto",group="debug OpMode")
-public class ClaimAuto extends LinearOpMode{
+@Autonomous(name = "Encoder Drive", group = "debug OpMode")
+public class EncoderDrive extends LinearOpMode {
 
     private MecanumDrive mecanumDrive;
-    private MarkerServo markerServo;
+
 
     @Override
     public void runOpMode() throws InterruptedException{
+
         mecanumDrive = new MecanumDrive(hardwareMap);
-        markerServo = new MarkerServo(hardwareMap);
+
+
+        telemetry.addData(">", "Inited");
+        telemetry.update();
         waitForStart();
 
-        mecanumDrive.moveParaRight(3000);
+        mecanumDrive.moveFwd(1000);
         while (mecanumDrive.isMotorBusy());
         mecanumDrive.stopMove();
 
-        markerServo.rotateServo(1);
-        Thread.sleep(750);
-
-        markerServo.rotateServo(0);
-        Thread.sleep(750);
-
-        markerServo.stopServo();
-
-        mecanumDrive.moveParaLeft(6500);
+        mecanumDrive.moveParaLeft(1000);
         while (mecanumDrive.isMotorBusy());
         mecanumDrive.stopMove();
+
+
     }
-
 
 }

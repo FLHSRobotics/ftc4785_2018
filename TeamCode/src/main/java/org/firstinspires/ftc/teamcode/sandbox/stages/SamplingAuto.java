@@ -18,7 +18,7 @@ public class SamplingAuto extends LinearOpMode{
 
 
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
         tensorflowSampling = new TensorflowSampling(hardwareMap,telemetry);
         mecanumDrive = new MecanumDrive(hardwareMap);
 
@@ -30,54 +30,87 @@ public class SamplingAuto extends LinearOpMode{
 
 
         if(opModeIsActive()){
-
+            //Start Tensorflow
             tensorflowSampling.activateTfod();
 
             mecanumDrive.stopMove();
 
-
             for(tries =0; tries < 3 && !seenGold ; ++tries){
-                Thread.sleep(800);
+                Thread.sleep(600);
                 isGold = tensorflowSampling.checkGold();
                 telemetry.addData("Gold detected?", isGold);
                 telemetry.addData("Tries", tries);
                 if(isGold && tensorflowSampling.getRecognitions() != null){
                     telemetry.addData("Gold seen?", seenGold);
-                    mecanumDrive.moveFwd();
-                    Thread.sleep(500);
-                    mecanumDrive.stopMove();
-                    seenGold = isGold;
                     tensorflowSampling.disableTfod();
-                    mecanumDrive.moveRvr();
-                    Thread.sleep(500);
+
+                    if(tries ==2){//If mineral is in middle, push into the depo
+                        mecanumDrive.moveFwd(2800);
+                        while (mecanumDrive.isMotorBusy());
+                        mecanumDrive.stopMove();
+
+                        mecanumDrive.moveRvr(3000);
+                        while (mecanumDrive.isMotorBusy());
+                        mecanumDrive.stopMove();
+                    }else{
+                        mecanumDrive.moveFwd(1000);
+                        while (mecanumDrive.isMotorBusy());
+                        mecanumDrive.stopMove();
+
+                        mecanumDrive.moveRvr(1200);
+                        while (mecanumDrive.isMotorBusy());
+                        mecanumDrive.stopMove();
+                    }
+                    //Set seen gold
+                    seenGold = isGold;
                     mecanumDrive.stopMove();
-                }else if(tries > 0){
-                    mecanumDrive.moveParaLeft();
-                    Thread.sleep(2000);
+                }else if(tries > 0){//Not detected, Try Again
+                    mecanumDrive.moveParaLeft(1800);
+                    while (mecanumDrive.isMotorBusy());
                     mecanumDrive.stopMove();
                 }
                 telemetry.update();
             }
 
-            if(tries == 1){
-                mecanumDrive.moveParaLeft();
-                Thread.sleep(7500);
+            tries -=2;//Reset counter
+            telemetry.addData("Pushed, tries",tries);
+            telemetry.update();
+
+            ///Move to per. wall
+            if(tries == -1){
+                mecanumDrive.moveParaLeft(4500);
+                while (mecanumDrive.isMotorBusy());
                 mecanumDrive.stopMove();
+
+            }else if(tries == 1){
+                mecanumDrive.moveParaLeft(3400);
+                while (mecanumDrive.isMotorBusy());
+                mecanumDrive.stopMove();
+
             }else if(tries == 2){
-                mecanumDrive.moveParaLeft();
-                Thread.sleep(6000);
-                mecanumDrive.stopMove();
-            }else{
-                mecanumDrive.moveParaLeft();
-                Thread.sleep(4500);
+                mecanumDrive.moveParaLeft(2700);
+                while (mecanumDrive.isMotorBusy());
                 mecanumDrive.stopMove();
             }
 
-            mecanumDrive.rightConerning();
-            Thread.sleep(1500);
-            mecanumDrive.moveRvr();
-            Thread.sleep(700);
+            mecanumDrive.turnAround(-940);
+            while (mecanumDrive.isMotorBusy());
             mecanumDrive.stopMove();
+
+            //Try to move forward to line up with depo
+            if(tries == -1){
+                mecanumDrive.moveFwd(600);
+                while (mecanumDrive.isMotorBusy());
+                mecanumDrive.stopMove();
+            }else if(tries == 1){
+                mecanumDrive.moveFwd(300);
+                while (mecanumDrive.isMotorBusy());
+                mecanumDrive.stopMove();
+            }else if(tries == 2){
+                mecanumDrive.moveFwd(300);
+                while (mecanumDrive.isMotorBusy());
+                mecanumDrive.stopMove();
+            }
 
             telemetry.update();
         }

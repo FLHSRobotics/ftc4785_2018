@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="TelOp Debug", group="opMode")
@@ -15,6 +17,10 @@ public class TelopDebug extends OpMode
     private double leftFrontPower,rightFrontPower,leftRearPower,rightRearPower;
     private int leftFrontPosition,rightFrontPosition,leftRearPosition,rightRearPosition;
 
+    private DcMotor leftArmMotor,rightArmMotor;
+    private CRServo armSlider;
+    private double armPower = 0.5;
+
     private DcMotor rightRise,leftRise;
     private double risePower = 0.00;
 
@@ -25,6 +31,7 @@ public class TelopDebug extends OpMode
 
         setupDrive();
         setupRiser();
+        setupArms();
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
@@ -43,6 +50,7 @@ public class TelopDebug extends OpMode
     public void loop() {
         loopDrive();
         loopRiser();
+        loopArm();
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time :" + runtime.toString());
@@ -55,6 +63,10 @@ public class TelopDebug extends OpMode
 
     @Override
     public void stop() {
+            leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      leftRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     private void setupDrive(){
@@ -63,10 +75,20 @@ public class TelopDebug extends OpMode
         leftRearDrive = hardwareMap.get(DcMotor.class, "left_rear_drive");
         rightRearDrive = hardwareMap.get(DcMotor.class,"right_rear_drive");
 
+
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftRearDrive.setDirection(DcMotor.Direction.REVERSE);
         rightRearDrive.setDirection(DcMotor.Direction.FORWARD);
+    }
+
+    private void setupArms(){
+        leftArmMotor = hardwareMap.get(DcMotor.class,"left_arm_motor");
+        rightArmMotor = hardwareMap.get(DcMotor.class, "right_arm_motor");
+        armSlider = hardwareMap.get(CRServo.class, "arm_slider");
+
+        leftArmMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightArmMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
     private void setupRiser(){
@@ -114,6 +136,27 @@ public class TelopDebug extends OpMode
         }
         leftRise.setPower(risePower);
         rightRise.setPower(risePower);
+    }
+
+    private void loopArm(){
+        if(gamepad1.dpad_up){
+            armSlider.setPower(1);
+        }else if(gamepad1.dpad_down){
+            armSlider.setPower(0);
+        }else{
+            armSlider.setPower(0.5);
+        }
+
+        if(gamepad1.dpad_left){
+            leftArmMotor.setPower(0.5);
+            rightArmMotor.setPower(0.5);
+        }else if(gamepad1.dpad_right){
+            leftArmMotor.setPower(-0.5);
+            rightArmMotor.setPower(-0.5);
+        }else{
+            leftArmMotor.setPower(0);
+            rightArmMotor.setPower(0);
+        }
     }
 
 

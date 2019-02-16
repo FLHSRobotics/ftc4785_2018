@@ -25,13 +25,13 @@ public class RiserControl {
     }
 
     public void riseRiser(){
-        this.risePower = 0.75;
+        this.risePower = 1;
         this.leftRise.setPower(this.risePower);
         this.rightRise.setPower(this.risePower);
     }
 
     public void lowerRiser(){
-        this.risePower = -0.75;
+        this.risePower = -1;
         this.leftRise.setPower(this.risePower);
         this.rightRise.setPower(this.risePower);
     }
