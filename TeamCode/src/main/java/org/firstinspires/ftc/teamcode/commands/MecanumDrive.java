@@ -10,7 +10,7 @@ public class MecanumDrive{
     private DcMotorEx leftFrontDrive,rightFrontDrive,leftRearDrive,rightRearDrive;
     private HardwareMap hardwareMap;
 
-    private double power = 0.7;
+    private double power = 0.55;
 
     public MecanumDrive(
             HardwareMap hardwareMap
@@ -164,10 +164,11 @@ public class MecanumDrive{
         this.leftRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        this.leftFrontDrive.setTargetPositionTolerance(50);
-        this.rightFrontDrive.setTargetPositionTolerance(50);
-        this.leftRearDrive.setTargetPositionTolerance(50);
-        this.rightRearDrive.setTargetPositionTolerance(50);
+        this.leftFrontDrive.setTargetPositionTolerance(25);
+        this.rightFrontDrive.setTargetPositionTolerance(25);
+        this.leftRearDrive.setTargetPositionTolerance(25);
+        this.rightRearDrive.setTargetPositionTolerance(25
+        );
     }
 
     public boolean isMotorBusy(){

@@ -42,7 +42,7 @@ public class DepoAutonomous extends LinearOpMode{
         while (mecanumDrive.isMotorBusy());
         mecanumDrive.stopMove();
 
-        mecanumDrive.moveFwd(1200);
+        mecanumDrive.moveFwd(1100);
         while (mecanumDrive.isMotorBusy());
         mecanumDrive.stopMove();
 
@@ -71,7 +71,7 @@ public class DepoAutonomous extends LinearOpMode{
                     while (mecanumDrive.isMotorBusy());
                     mecanumDrive.stopMove();
 
-                    mecanumDrive.moveRvr(2400);
+                    mecanumDrive.moveRvr(2300);
                     while (mecanumDrive.isMotorBusy());
                     mecanumDrive.stopMove();
                 }else{
@@ -87,7 +87,7 @@ public class DepoAutonomous extends LinearOpMode{
                 seenGold = isGold;
                 mecanumDrive.stopMove();
             }else if(tries > 0){
-                mecanumDrive.moveParaLeft(1800);
+                mecanumDrive.moveParaLeft(1400);
                 while (mecanumDrive.isMotorBusy());
                 mecanumDrive.stopMove();
             }
