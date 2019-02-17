@@ -20,21 +20,10 @@ public class ClaimAuto extends LinearOpMode{
         markerServo = new MarkerServo(hardwareMap);
         waitForStart();
 
-        mecanumDrive.moveParaRight(3000);
-        while (mecanumDrive.isMotorBusy());
-        mecanumDrive.stopMove();
-
         markerServo.rotateServo(1);
         Thread.sleep(750);
 
-        markerServo.rotateServo(0);
-        Thread.sleep(750);
-
         markerServo.stopServo();
-
-        mecanumDrive.moveParaLeft(6500);
-        while (mecanumDrive.isMotorBusy());
-        mecanumDrive.stopMove();
     }
 
 

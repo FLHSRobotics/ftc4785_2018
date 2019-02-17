@@ -1,17 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.commands.MarkerServo;
 import org.firstinspires.ftc.teamcode.commands.MecanumDrive;
 import org.firstinspires.ftc.teamcode.commands.RiserControl;
 import org.firstinspires.ftc.teamcode.commands.TensorflowSampling;
-import org.firstinspires.ftc.teamcode.commands.VuforiaNavigation;
 
-@Autonomous(name="Depo Autonomous",group="final")
-public class DepoAutonomous extends LinearOpMode{
+@Autonomous(name="Crater Autonomous",group="final")
+public class CraterAutonomous extends LinearOpMode{
 
     private MecanumDrive mecanumDrive;
     private TensorflowSampling tensorflowSampling;
@@ -21,7 +19,6 @@ public class DepoAutonomous extends LinearOpMode{
 
     private boolean isGold,seenGold;
     private int tries;
-
 
 
     @Override
@@ -65,16 +62,6 @@ public class DepoAutonomous extends LinearOpMode{
             if(isGold && tensorflowSampling.getRecognitions() != null){
                 telemetry.addData("Gold seen?", seenGold);
                 tensorflowSampling.disableTfod();
-
-                if(tries ==2){
-                    mecanumDrive.moveFwd(2000);
-                    while (mecanumDrive.isMotorBusy());
-                    mecanumDrive.stopMove();
-
-                    mecanumDrive.moveRvr(2100);
-                    while (mecanumDrive.isMotorBusy());
-                    mecanumDrive.stopMove();
-                }else{
                     mecanumDrive.moveFwd(1000);
                     while (mecanumDrive.isMotorBusy());
                     mecanumDrive.stopMove();
@@ -82,8 +69,6 @@ public class DepoAutonomous extends LinearOpMode{
                     mecanumDrive.moveRvr(1200);
                     while (mecanumDrive.isMotorBusy());
                     mecanumDrive.stopMove();
-                }
-
                 seenGold = isGold;
                 mecanumDrive.stopMove();
             }else if(tries > 0){
@@ -109,22 +94,22 @@ public class DepoAutonomous extends LinearOpMode{
         telemetry.update();
 
         if(tries == -1 || tries == 0){
-            mecanumDrive.moveParaLeft(4500);
+            mecanumDrive.moveParaRight(2100);
             while (mecanumDrive.isMotorBusy());
             mecanumDrive.stopMove();
 
         }else if(tries == 1){
-            mecanumDrive.moveParaLeft(3400);
+            mecanumDrive.moveParaRight(3400);
             while (mecanumDrive.isMotorBusy());
             mecanumDrive.stopMove();
 
         }else if(tries == 2){
-            mecanumDrive.moveParaLeft(2000);
+            mecanumDrive.moveParaRight(4500);
             while (mecanumDrive.isMotorBusy());
             mecanumDrive.stopMove();
         }
 
-        mecanumDrive.turnAround(-940);
+        mecanumDrive.turnAround(940);
         while (mecanumDrive.isMotorBusy());
         mecanumDrive.stopMove();
 
